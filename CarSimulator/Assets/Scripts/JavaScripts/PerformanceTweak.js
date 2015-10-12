@@ -20,6 +20,19 @@ private var highFPS = 35.0;
 private var skipChangesTimeout = 1.0;
 private var nextTerrainChange = 0;
 
+/*
+public enum QualityLevel
+ {
+     Fastest,     // 0
+     Fast,        // 1
+     Simple,      // 2
+     Good,        // 3
+     Beautiful,   // 4
+     Fantastic    // 5
+ }
+*/
+
+
 function Start()
 {
 	if( !fpsCounter || !terrain ) {
@@ -178,22 +191,22 @@ function DoTweaks()
 	}
 	if(fps < 20)
 	{
-		if(QualitySettings.currentLevel > QualityLevel.Fastest)
+		if(QualitySettings.GetQualityLevel() > 0 )
 			QualitySettings.DecreaseLevel();
 	}
 	else if(fps > highFPS)
 	{
-		if(QualitySettings.currentLevel < QualityLevel.Fantastic)
+		if(QualitySettings.GetQualityLevel() < 5)
 			QualitySettings.IncreaseLevel();
 	}
 	
-	if(QualitySettings.currentLevel < QualityLevel.Good)
+	if(QualitySettings.GetQualityLevel() < 3)
 	{
 		var sh : Shader = Shader.Find("VertexLit");
 		var bumpedObjects : GameObject[] = GameObject.FindGameObjectsWithTag("Bumped");
 		for(var i : int = 0; i < bumpedObjects.length; i++)
 		{
-			bumpedObjects[i].renderer.material.shader = sh;
+			bumpedObjects[i].GetComponent.<Renderer>().material.shader = sh;
 		}
 	}
 }
